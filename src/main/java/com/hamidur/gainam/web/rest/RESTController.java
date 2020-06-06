@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,10 +34,38 @@ public class RESTController
         this.customerRepository = customerRepository;
     }
 
+    @DeleteMapping(value = "/customer/{customerId}")
+    public ResponseEntity<Void> deleteCustomer(@PositiveOrZero @PathVariable Integer customerId)
+    {
+        customerRepository.deleteCustomerByQuery(customerId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/customer", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Customer> updateCustomer(@Valid @RequestBody Customer customer)
+    {
+        // business logic -> should be in service layer
+        if(customer.getCustomerId() == null)
+        {
+            if(customerRepository.findByEmail(customer.getEmail()) == null)
+                return new ResponseEntity<>(customerRepository.save(customer), HttpStatus.OK);
+            // throw EmailAlreadyExists exception
+        }
+        else
+        {
+            try
+            {
+                return new ResponseEntity<>(customerRepository.save(customer), HttpStatus.OK);
+            }
+            catch (Exception e){} // catch Constraint violation and throw email exists
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PostMapping(value = "/customer", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Customer> insertCustomer(@Valid @RequestBody Customer customer)
     {
-        return new ResponseEntity<>(customerRepository.save(customer), HttpStatus.OK);
+        return new ResponseEntity<>(customerRepository.save(customer), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/customers", produces = MediaType.APPLICATION_JSON_VALUE)
