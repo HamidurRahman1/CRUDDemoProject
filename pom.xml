@@ -12,7 +12,7 @@
     </parent>
 
     <groupId>com.hamidur</groupId>
-    <artifactId>springSecurity</artifactId>
+    <artifactId>gainam</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Spring Boot Demo</name>
     <description>Spring Boot demo project for GainAm</description>
