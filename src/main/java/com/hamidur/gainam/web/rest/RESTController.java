@@ -1,5 +1,6 @@
 package com.hamidur.gainam.web.rest;
 
+import com.hamidur.gainam.exceptions.custom.CustomerNotFound;
 import com.hamidur.gainam.models.Customer;
 import com.hamidur.gainam.repos.CustomerRepository;
 
@@ -79,6 +80,8 @@ public class RESTController
     @GetMapping(value = "/customer/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Customer> getCustomerById(@PositiveOrZero @PathVariable("customerId") Integer cId)
     {
-        return new ResponseEntity<>(customerRepository.findByCustomerId(cId), HttpStatus.OK);
+        Customer customer = customerRepository.findByCustomerId(cId);
+        if(customer == null) throw new CustomerNotFound("No customer found with id="+cId);
+        return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 }
