@@ -1,5 +1,7 @@
 package com.hamidur.gainam.models;
 
+import org.springframework.validation.annotation.Validated;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +16,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "customers")
+@Validated
 public class Customer
 {
     @Id
