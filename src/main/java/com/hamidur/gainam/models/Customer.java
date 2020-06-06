@@ -20,13 +20,13 @@ public class Customer
     @Column(name = "customer_id", updatable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer customerId;
+
     @Column(name = "first_name", updatable = true, unique = false)
     @NotNull(message = "first name cannot be null")
     @NotBlank(message = "first name has too many white spaces")
     @Size(min = 2, max = 30, message = "first name must be in length of 2 to 30 characters")
     @Pattern(regexp = "^(?![\\s.]+$)[a-zA-Z\\s.]*$", message = "first name contains unexpected characters")
     private String firstName;
-
 
     @Column(name = "last_name", updatable = true, nullable = true, unique = false)
     @Size(min = 2, max = 30, message = "last name must be in length of 2 to 30 characters")
