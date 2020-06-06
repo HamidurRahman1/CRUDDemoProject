@@ -10,9 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,6 +31,12 @@ public class RESTController
     @Autowired
     public RESTController(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
+    }
+
+    @PostMapping(value = "/customer", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Customer> insertCustomer(@Valid @RequestBody Customer customer)
+    {
+        return new ResponseEntity<>(customerRepository.save(customer), HttpStatus.OK);
     }
 
     @GetMapping(value = "/customers", produces = MediaType.APPLICATION_JSON_VALUE)
