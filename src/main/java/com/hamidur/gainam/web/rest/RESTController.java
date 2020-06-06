@@ -45,22 +45,7 @@ public class RESTController
     @PutMapping(value = "/customer", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Customer> updateCustomer(@Valid @RequestBody Customer customer)
     {
-        // business logic -> should be in service layer
-        if(customer.getCustomerId() == null)
-        {
-            if(customerRepository.findByEmail(customer.getEmail()) == null)
-                return new ResponseEntity<>(customerRepository.save(customer), HttpStatus.OK);
-            // throw EmailAlreadyExists exception
-        }
-        else
-        {
-            try
-            {
-                return new ResponseEntity<>(customerRepository.save(customer), HttpStatus.OK);
-            }
-            catch (Exception e){} // catch Constraint violation and throw email exists
-        }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(customerRepository.save(customer), HttpStatus.OK);
     }
 
     @PostMapping(value = "/customer", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -74,14 +59,17 @@ public class RESTController
     {
         Set<Customer> customers = new HashSet<>();
         customerRepository.findAll().forEach(customer -> customers.add(customer));
+
+        if(customers.isEmpty())
+            throw new CustomerNotFound("No customers to return");
         return new ResponseEntity<>(customers, HttpStatus.OK);
     }
 
     @GetMapping(value = "/customer/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Customer> getCustomerById(@PositiveOrZero @PathVariable("customerId") Integer cId)
+    public ResponseEntity<Customer> getCustomerById(@PositiveOrZero @PathVariable("customerId") Integer customerId)
     {
-        Customer customer = customerRepository.findByCustomerId(cId);
-        if(customer == null) throw new CustomerNotFound("No customer found with id="+cId);
+        Customer customer = customerRepository.findByCustomerId(customerId);
+        if(customer == null) throw new CustomerNotFound("No customer found with id="+customerId);
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 }
