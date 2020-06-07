@@ -22,6 +22,9 @@ public interface CustomerRepository extends CrudRepository<Customer, Integer>
     Customer findByCustomerId(Integer customerId);
     Customer findByEmail(@NotNull @NotBlank @Pattern(regexp = "^[A-Za-z0-9_.-]+@[A-Za-z0-9_.-]+$") String email);
 
+    @Query(nativeQuery = true, value = "select * from customers order by customer_id asc")
+    Set<Customer> findAll();
+
     @Query(nativeQuery = true,
         value = "select * from customers where first_name = lower(:fName) and last_name = lower(:lName)")
     Set<Customer> getCustomersByFirstNameAndLastName(@NotNull @NotBlank @Param("fName") String first,

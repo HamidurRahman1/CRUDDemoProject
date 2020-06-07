@@ -5,6 +5,7 @@ import com.hamidur.gainam.exceptions.custom.ErrorResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -47,6 +48,14 @@ public class AppExceptionHandler
     {
         String[] s = v.getLocalizedMessage().split(";");
         return new ResponseEntity<>(new ErrorResponse(LocalDateTime.now(), s[s.length-1],
+                HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ErrorResponse> violation(HttpRequestMethodNotSupportedException v)
+    {
+        return new ResponseEntity<>(new ErrorResponse(LocalDateTime.now(), v.getMessage(),
                 HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
     }
 }

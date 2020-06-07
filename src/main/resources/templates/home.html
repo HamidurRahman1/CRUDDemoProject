@@ -6,7 +6,26 @@
 </head>
 <body>
     <div>
-        <h1>Home Page</h1>
+        <h1>Customer Home Page</h1>
+    </div>
+
+    <div id="cust-content">
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Country</th>
+            </tr>
+            <th:block th:each="cust : ${customers}">
+                <tr>
+                    <td th:text="${cust.getCustomerId()}"></td>
+                    <td th:text="${cust.getFirstName() + ' ' + cust.getLastName()}"></td>
+                    <td th:text="${cust.getEmail()}"></td>
+                    <td th:text="${cust.getCountry()}"></td>
+                </tr>
+            </th:block>
+        </table>
     </div>
 </body>
 </html>

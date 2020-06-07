@@ -22,7 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 .antMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/api/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers(HttpMethod.PUT, "/api/**").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/", "index", "home", "/home.html").permitAll()
+                .antMatchers("/", "index", "home", "/home.html", "/access-denied").permitAll()
                 .and()
                 .csrf().disable()
                 .logout().clearAuthentication(true).invalidateHttpSession(true).deleteCookies("JSESSIONID")
