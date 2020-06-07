@@ -53,9 +53,9 @@ public class AppExceptionHandler
 
     @ResponseBody
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<ErrorResponse> violation(HttpRequestMethodNotSupportedException v)
+    public ResponseEntity<ErrorResponse> violation()
     {
-        return new ResponseEntity<>(new ErrorResponse(LocalDateTime.now(), v.getMessage(),
+        return new ResponseEntity<>(new ErrorResponse(LocalDateTime.now(), "user does not have enough privileges to make this request",
                 HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
     }
 }

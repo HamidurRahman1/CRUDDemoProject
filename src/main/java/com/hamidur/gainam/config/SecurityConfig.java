@@ -1,11 +1,14 @@
 package com.hamidur.gainam.config;
 
+import com.hamidur.gainam.auth.service.AppUserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -32,6 +35,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 .headers().frameOptions().disable()
                 .and()
                 .httpBasic();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider()
+    {
+        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+        auth.setUserDetailsService(userDetailsService());
+        auth.setPasswordEncoder(passwordEncoder());
+        return auth;
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService()
+    {
+        return new AppUserDetailsServiceImpl();
     }
 
     @Bean
