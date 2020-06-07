@@ -1,3 +1,9 @@
+
+drop table customers if exists;
+drop table users_roles if exists;
+drop table users if exists;
+drop table roles if exists;
+
 create table customers
 (
   customer_id int primary key auto_increment,
@@ -12,7 +18,7 @@ create table users
   user_id int primary key auto_increment,
   username varchar(80) not null unique,
   password varchar(80) not null,
-  enabled tinyint not null,
+  enabled tinyint not null
 );
 
 create table roles
