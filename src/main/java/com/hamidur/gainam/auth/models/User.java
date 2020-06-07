@@ -1,4 +1,4 @@
-package com.hamidur.gainam.auth;
+package com.hamidur.gainam.auth.models;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
